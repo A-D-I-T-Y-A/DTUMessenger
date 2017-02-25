@@ -1,6 +1,7 @@
 package com.decode.dtumessenger;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,10 +16,12 @@ import com.decode.dtumessenger.Models.Message;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatScreenActivity extends AppCompatActivity {
 
     RecyclerView MsgRecyclerView;
-
+    CircleImageView actionBarLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,15 @@ public class ChatScreenActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setTitle("Name");
+        actionBarLogo = (CircleImageView) findViewById(R.id.action_bar_logo);
+
+        actionBarLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ChatScreenActivity.this, ProfileActivity.class);
+                startActivity(i);
+            }
+        });
 
         ArrayList<Message> MsgList = new ArrayList<Message>();
         MsgList.add(new Message(1,2,3,"aanya","1234"));
