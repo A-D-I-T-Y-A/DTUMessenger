@@ -8,16 +8,15 @@
     tools:context="com.decode.dtumessenger.ChatScreenActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/msg_list"
+        android:layout_margin="10dp"
+        android:id="@+id/rv_msg_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/chat_func"
-        android:layout_gravity="center_horizontal|bottom"
         android:fadeScrollbars="true"
         android:scrollbarSize="2dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
-        app:layoutManager="LinearLayoutManager"
         app:reverseLayout="true" />
 
     <LinearLayout
