@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal" >
 
     <EditText
@@ -38,6 +38,7 @@
         android:layout_marginLeft="10dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
+        android:textColor="#ffffff"
         android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
         android:padding="5dp" />
 

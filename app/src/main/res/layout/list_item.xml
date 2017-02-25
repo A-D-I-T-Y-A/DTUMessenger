@@ -23,8 +23,7 @@
     android:background="@drawable/rounded_corner"
     android:padding="16dp"
     android:text="Android charting application xml ui design. Android charting application xml ui design tutorial with example. Android charting application xml ui design. Android charting application xml ui design. "
-    android:textColor="#000" />
-
+    android:textColor="#ffffff" />
 
 <View
     android:layout_width="0dp"

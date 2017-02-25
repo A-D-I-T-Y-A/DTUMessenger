@@ -15,10 +15,10 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="30dp"
     android:layout_marginTop="10dp"
-    android:background="@drawable/rounded_corner"
+    android:background="@drawable/rounded_corner_next"
     android:padding="16dp"
     android:text="Android charting application xml ui design. Android charting application xml ui design tutorial with example. Android charting application xml ui design. Android charting application xml ui design. "
-    android:textColor="#000" />
+    android:textColor="#ffffff" />
 
 <ImageView
     android:id="@+id/iv_image"
