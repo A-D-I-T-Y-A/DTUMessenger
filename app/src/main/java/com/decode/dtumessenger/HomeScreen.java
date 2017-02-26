@@ -1,6 +1,10 @@
 package com.decode.dtumessenger;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 import com.decode.dtumessenger.Models.Contact;
 import com.decode.dtumessenger.Models.Message;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -25,12 +30,26 @@ public class HomeScreen extends AppCompatActivity {
     RecyclerView ContactRecyclerView;
     ArrayList<Contact> ContactList;
     ContactRecyclerViewAdapter contactRecyclerViewAdapter;
+    FloatingActionButton fabAdd;
+    EditText adEtName, adEtStatus, adEtId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+
+
+
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAddDialog();
+            }
+        });
 
 
         ContactList = new ArrayList<Contact>();
@@ -112,5 +131,30 @@ public class HomeScreen extends AppCompatActivity {
             // holder.image.setImageResource();
 
         }
+    }
+
+
+    public void openAddDialog() {
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View editDialogView = li.inflate(R.layout.dialog_add_detail, null);
+        final AlertDialog.Builder editDialog = new AlertDialog.Builder(this);
+        editDialog.setView(editDialogView);
+
+        adEtName = (EditText) editDialogView.findViewById(R.id.ad_et_name);
+        adEtStatus = (EditText) editDialogView.findViewById(R.id.ad_et_status);
+        adEtId = (EditText) editDialogView.findViewById(R.id.ad_et_id);
+
+        editDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+
+        editDialog.setNegativeButton("Cancel", null);
+        editDialog.create().show();
     }
 }
