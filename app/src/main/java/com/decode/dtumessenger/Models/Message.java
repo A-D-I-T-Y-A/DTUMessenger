@@ -59,4 +59,10 @@ public class Message {
     public void setTime(String time) {
         this.time = time;
     }
+
+    public String getUrlParams(){
+        String params = "chat_id="+Integer.toString(chat_id)+"&user_id="+Integer.toString(user_id)
+                +"&content="+content+"&time="+time;
+        return params;
+    }
 }
