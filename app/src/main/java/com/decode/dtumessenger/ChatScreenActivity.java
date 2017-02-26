@@ -161,7 +161,10 @@ public class ChatScreenActivity extends AppCompatActivity {
         @Override
         public int getItemViewType(int position) {
             // this will be done using flag as to whose msg is coming.. for now right left it is
-            return position%2;
+            //return position%2;
+            if(my_id == mMsg.get(position).getUser_id())
+                return 1;
+            else return 0;
         }
 
         @Override

@@ -31,7 +31,7 @@ public class HomeScreen extends AppCompatActivity {
     ArrayList<Contact> ContactList;
     ContactRecyclerViewAdapter contactRecyclerViewAdapter;
     FloatingActionButton fabAdd;
-    EditText adEtName, adEtStatus, adEtId;
+    EditText adEtName, adEtStatus, adEtId, adEtNum;
 
 
     @Override
@@ -144,6 +144,7 @@ public class HomeScreen extends AppCompatActivity {
         adEtName = (EditText) editDialogView.findViewById(R.id.ad_et_name);
         adEtStatus = (EditText) editDialogView.findViewById(R.id.ad_et_status);
         adEtId = (EditText) editDialogView.findViewById(R.id.ad_et_id);
+        adEtNum = (EditText) findViewById(R.id.ad_et_num);
 
         editDialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
