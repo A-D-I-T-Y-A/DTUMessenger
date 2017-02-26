@@ -27,6 +27,7 @@
             android:textColor="#000" />
 
         <TextView
+            android:id="@+id/tv_msgtime"
             android:layout_below="@id/tv_msg"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"

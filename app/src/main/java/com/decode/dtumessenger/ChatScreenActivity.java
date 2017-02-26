@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -105,7 +106,10 @@ public class ChatScreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 msg = eMsg.getText().toString();
                 if(!msg.equals("") && !msg.isEmpty() && msg!=null){
-                    Message newmsg = new Message(1,2,3,msg,"12:50");
+                    Calendar c = Calendar.getInstance();
+                    int hours = c.get(Calendar.HOUR);
+                    int minute = c.get(Calendar.MINUTE);
+                    Message newmsg = new Message(latestmsg+1,chat_id,my_id,msg,Integer.toString(hours)+" : "+Integer.toString(minute));
                     new PostMessage().execute(newmsg);
                 }
             }
@@ -141,11 +145,13 @@ public class ChatScreenActivity extends AppCompatActivity {
 
         public TextView msg;
         public CircleImageView image;
+        public TextView msgtime;
 
         public MsgRecyclerViewHolder(View itemView) {
             super(itemView);
             msg = (TextView) itemView.findViewById(R.id.tv_msg);
             image = (CircleImageView) itemView.findViewById(R.id.iv_image);
+            msgtime = (TextView)itemView.findViewById(R.id.tv_msgtime);
         }
     }
 
@@ -189,6 +195,7 @@ public class ChatScreenActivity extends AppCompatActivity {
 
             Message thisMsg = mMsg.get(position);
             holder.msg.setText(thisMsg.getContent());
+            holder.msgtime.setText(thisMsg.getTime());
             //holder.image.setImageResource(thisMsg.);
 
         }
@@ -223,6 +230,8 @@ public class ChatScreenActivity extends AppCompatActivity {
 
             if(respone.equals("S")){
                 MsgList.add(params[0]);
+                latestmsg++;
+                Log.d("send",Integer.toString(latestmsg));
                 return "done";
             }
             else
@@ -279,7 +288,8 @@ public class ChatScreenActivity extends AppCompatActivity {
                             c.getString(TIME)));
                 }
 
-                latestmsg = MsgList.get(MsgList.size()-1).getMsg_id();
+                if(jsonArray.length()>0)
+                latestmsg = jsonArray.getJSONObject(jsonArray.length()-1).getInt(MSG_ID);
                 //} else {
                 //Toast.makeText(getApplicationContext(),"Network Error Occured",Toast.LENGTH_LONG).show();
                 //}
