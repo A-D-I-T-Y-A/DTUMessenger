@@ -4,7 +4,7 @@
     android:id="@+id/activity_home_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.decode.dtumessenger.HomeScreen">
 
     <android.support.v7.widget.RecyclerView
@@ -20,37 +20,13 @@
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal" >
+        app:srcCompat="@drawable/ic_add_circle_white_18dp" />
 
-        <EditText
-            android:id="@+id/tv_accept_user_id"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textColor="#ffffff"
-            android:inputType="textMultiLine|number"
-            android:padding="5dp" />
-
-        <ImageButton
-            android:id="@+id/btn_select"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
-            android:background="@drawable/ic_add_circle_white_18dp"
-            android:scaleType="fitCenter"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
 </RelativeLayout>
