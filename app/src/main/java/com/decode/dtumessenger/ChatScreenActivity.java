@@ -80,7 +80,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         sendBtn = (ImageButton)findViewById(R.id.btn_send);
         eMsg = (EditText)findViewById(R.id.chat_box);
 
-        chat_id = getIntent().getIntExtra("CHAT_ID",1);
+        chat_id = getIntent().getIntExtra("CHAT_ID",2);
 
         spref = getSharedPreferences("LatestMessage",MODE_PRIVATE);
         latestmsg = spref.getInt(Integer.toString(chat_id),-1);
@@ -115,6 +115,8 @@ public class ChatScreenActivity extends AppCompatActivity {
         MsgRecyclerView.setLayoutManager(layoutManager);
         MsgRecyclerView.setAdapter(msgRecyclerViewAdapter);
         msgRecyclerViewAdapter.notifyDataSetChanged();
+
+        new ReceiveMessages().execute();
 
     }
 
@@ -240,7 +242,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             // getting JSON string from URL
-            final JSONArray jsonArray = new GetMessages().makeHttpRequest("2");
+            final JSONArray jsonArray = new GetMessages().makeHttpRequest(2,10);
 
 
 

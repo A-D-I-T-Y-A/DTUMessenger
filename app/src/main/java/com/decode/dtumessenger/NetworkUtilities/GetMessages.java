@@ -1,5 +1,7 @@
 package com.decode.dtumessenger.NetworkUtilities;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,12 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 /**
  * Created by Aditya on 2/26/2017.
  */
@@ -25,7 +33,6 @@ public class GetMessages {
 
     static InputStream is = null;
     static JSONObject jObj = null;
-    static String json = "";
     StringBuilder stringBuilder;
     BufferedReader bufferedReader;
     String line;
@@ -33,53 +40,45 @@ public class GetMessages {
     JSONObject jsonObj;
     HttpURLConnection con = null;
     BufferedReader reader = null;
-    JSONArray jsonArray;
+    JSONArray json;
     StringBuffer buffer;
 
 
     // function get json from url
     // by making HTTP POST or GET mehtod
-    public JSONArray makeHttpRequest(String dep) {
+    public JSONArray makeHttpRequest(int chat_id, int msg_id) {
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("chat_id", Integer.toString(chat_id))
+                .add("msg_id", Integer.toString(msg_id))
+                .build();
+        Request request = new Request.Builder()
+                .url("http://192.168.137.1/getMessages.php")
+                .post(formBody)
+                .build();
+
         try {
-            URL url = new URL("http://192.168.137.1/getMessages?");
-            con = (HttpURLConnection) url.openConnection();
-            con.connect();
-            InputStream stream = con.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(stream));
-            buffer = new StringBuffer();
-            String line = "";
-            while ((line = reader.readLine()) != null){
-                buffer.append(line);
+            Response response = client.newCall(request).execute();
+            Log.d("send",request.toString());
+            if(response.isSuccessful()){
+                Log.d("send","success");
+                line = response.body().string();
+                //Log.d("send",response.body().string());
+                json = new JSONArray(line);
+                Log.d("send",json.toString());
+                return json;
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
+            // Do something with the response.
         } catch (IOException e) {
+            Log.d("send",e.toString());
             e.printStackTrace();
-        } finally {
-            if(con != null) {
-                con.disconnect();
-            }
-            try {
-                if(reader != null){
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            if(buffer != null) {
-                jsonArray = new JSONArray(buffer.toString());
-            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return jsonArray;
+        return null;
     }
 
 
