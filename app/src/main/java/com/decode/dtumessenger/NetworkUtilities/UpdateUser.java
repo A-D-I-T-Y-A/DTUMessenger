@@ -1,9 +1,6 @@
 package com.decode.dtumessenger.NetworkUtilities;
 
-import android.content.Context;
 import android.util.Log;
-
-import com.decode.dtumessenger.Models.Message;
 
 import java.io.IOException;
 
@@ -14,25 +11,24 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by Aditya on 2/26/2017.
+ * Created by Aditya on 2/27/2017.
  */
 
-public class InsertUser {
+public class UpdateUser {
 
     String resp = "error";
     // function get json from url
     // by making HTTP POST or GET mehtod
-    public String makeHttpRequest(String name,String id, String contact, String status) {
+    public String makeHttpRequest(int id, String name, String status) {
         OkHttpClient client = new OkHttpClient();
 
         RequestBody formBody = new FormBody.Builder()
-                .add("user_id", id)
+                .add("user_id", Integer.toString(id))
                 .add("name", name)
-                .add("contact", contact)
                 .add("status", status)
                 .build();
         Request request = new Request.Builder()
-                .url("http://192.168.137.1/registerUser.php")
+                .url("http://192.168.137.1/updateUser.php")
                 .post(formBody)
                 .build();
 

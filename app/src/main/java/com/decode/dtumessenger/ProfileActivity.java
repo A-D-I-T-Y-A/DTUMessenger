@@ -11,6 +11,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.decode.dtumessenger.Models.Message;
+import com.decode.dtumessenger.NetworkUtilities.GetMessages;
+import com.decode.dtumessenger.NetworkUtilities.GetUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +28,11 @@ import java.net.URL;
 public class ProfileActivity extends AppCompatActivity {
 
     ImageView ProfilePic;
+    TextView tstatus;
+    TextView tcontact;
+    int user_id;
+    String status;
+    String contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +50,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        ProfilePic = (ImageView)findViewById(R.id.iv_status);
+        user_id = getIntent().getIntExtra("USER_ID",1);
+        ProfilePic = (ImageView)findViewById(R.id.iv_profile_pic);
+        tcontact = (TextView)findViewById(R.id.tv_contact_item);
+        tstatus = (TextView)findViewById(R.id.tv_status);
 
-        new LoadImage().execute("3");
+
+
+        new LoadImage().execute(Integer.toString(user_id));
     }
 
     public class LoadImage extends AsyncTask<String,String,String>{
@@ -77,4 +95,45 @@ public class ProfileActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    class ReceiveMessages extends AsyncTask<Void,String,String>{
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            // getting JSON string from URL
+            final JSONObject jsonObject = new GetUser().makeHttpRequest(user_id);
+            //Log.d("get",Integer.toString(latestmsg));
+
+            if(jsonObject != null) {
+                try {
+                    status = jsonObject.getString("status");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    contact = jsonObject.getString("contact");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return "done";
+            }
+            else
+                return "nothing";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.equals("done")){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tcontact.setText(contact);
+                        tstatus.setText(status);
+                    }
+                });
+            }
+        }
+    }
+
 }

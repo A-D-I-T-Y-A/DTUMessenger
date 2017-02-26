@@ -47,6 +47,7 @@ public class ChatScreenActivity extends AppCompatActivity {
     int latestmsg = -1;
     int chat_id = 2;
     int my_id = 1;
+    int user_id;
 
     SharedPreferences spref;
 
@@ -85,13 +86,16 @@ public class ChatScreenActivity extends AppCompatActivity {
 
         chat_id = getIntent().getIntExtra("CHAT_ID",2);
 
-        spref = getSharedPreferences("LatestMessage",MODE_PRIVATE);
+        spref = getSharedPreferences("MyDetails",MODE_PRIVATE);
+        my_id = spref.getInt("USER_ID",-1);
+        user_id = chat_id-my_id;
         //latestmsg = spref.getInt(Integer.toString(chat_id),-1);
 
         actionBarLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ChatScreenActivity.this, ProfileActivity.class);
+                i.putExtra("USER_ID",user_id);
                 startActivity(i);
             }
         });
@@ -101,16 +105,16 @@ public class ChatScreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 msg = eMsg.getText().toString();
                 if(!msg.equals("") && !msg.isEmpty() && msg!=null){
-                    Message newmsg = new Message(1,2,3,msg,"1234");
+                    Message newmsg = new Message(1,2,3,msg,"12:50");
                     new PostMessage().execute(newmsg);
                 }
             }
         });
 
         MsgList = new ArrayList<Message>();
-        MsgList.add(new Message(1,2,3,"aanya","1234"));
+        /*MsgList.add(new Message(1,2,3,"aanya","1234"));
         MsgList.add(new Message(1,2,3,"anjndaijiajoxidk","1234"));
-        MsgList.add(new Message(1,2,3,"tester 3","1234"));
+        MsgList.add(new Message(1,2,3,"tester 3","1234"));*/
 
         msgRecyclerViewAdapter = new MsgRecyclerViewAdapter(MsgList);
         MsgRecyclerView = (RecyclerView) findViewById(R.id.rv_msg_list);
