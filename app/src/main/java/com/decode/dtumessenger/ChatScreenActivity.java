@@ -108,12 +108,12 @@ public class ChatScreenActivity extends AppCompatActivity {
     public class MsgRecyclerViewHolder extends RecyclerView.ViewHolder{
 
         public TextView msg;
-        public ImageView image;
+        public CircleImageView image;
 
         public MsgRecyclerViewHolder(View itemView) {
             super(itemView);
             msg = (TextView) itemView.findViewById(R.id.tv_msg);
-            image = (ImageView) itemView.findViewById(R.id.iv_image);
+            image = (CircleImageView) itemView.findViewById(R.id.iv_image);
         }
     }
 
