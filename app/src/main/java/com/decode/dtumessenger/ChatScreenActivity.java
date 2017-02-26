@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -63,6 +64,8 @@ public class ChatScreenActivity extends AppCompatActivity {
     // posts JSONArray
     JSONArray msgs = null;
 
+    Handler handler;
+
 
 
     @Override
@@ -83,7 +86,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         chat_id = getIntent().getIntExtra("CHAT_ID",2);
 
         spref = getSharedPreferences("LatestMessage",MODE_PRIVATE);
-        latestmsg = spref.getInt(Integer.toString(chat_id),-1);
+        //latestmsg = spref.getInt(Integer.toString(chat_id),-1);
 
         actionBarLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +120,16 @@ public class ChatScreenActivity extends AppCompatActivity {
         msgRecyclerViewAdapter.notifyDataSetChanged();
 
         new ReceiveMessages().execute();
+
+        //update check regular
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new ReceiveMessages().execute();
+                handler.postDelayed(this, 2000);
+            }
+        }, 2000);
 
     }
 
@@ -242,7 +255,8 @@ public class ChatScreenActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             // getting JSON string from URL
-            final JSONArray jsonArray = new GetMessages().makeHttpRequest(2,10);
+            final JSONArray jsonArray = new GetMessages().makeHttpRequest(2,latestmsg);
+            Log.d("get",Integer.toString(latestmsg));
 
 
 
@@ -281,4 +295,9 @@ public class ChatScreenActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
 }
