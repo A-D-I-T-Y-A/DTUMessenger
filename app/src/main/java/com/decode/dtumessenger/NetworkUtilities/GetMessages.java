@@ -41,7 +41,7 @@ public class GetMessages {
     // by making HTTP POST or GET mehtod
     public JSONArray makeHttpRequest(String dep) {
         try {
-            URL url = new URL("http://m.uploadedit.com/ba3s/1484835125991.txt");
+            URL url = new URL("http://192.168.137.1/getMessages?");
             con = (HttpURLConnection) url.openConnection();
             con.connect();
             InputStream stream = con.getInputStream();

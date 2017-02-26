@@ -42,6 +42,8 @@ public class ChatScreenActivity extends AppCompatActivity {
     MsgRecyclerViewAdapter msgRecyclerViewAdapter;
     // Progress Dialog
     private ProgressDialog pDialog;
+    int latestmsg = -1;
+    int chat_id = 2;
 
     // Creating JSON Parser object
     SendMessage jParser = new SendMessage();
@@ -217,6 +219,41 @@ public class ChatScreenActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    //MessageReciever
+    class ReceiveMessages extends AsyncTask<Void,String,String>{
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            // getting JSON string from URL
+            final JSONArray jsonArray = new GetMessages().makeHttpRequest("2");
+
+
+
+            // Check your log cat for JSON reponse
+            //Log.d("All posts: ", json.toString());
+            /*
+            try {
+                // looping through All posts
+                plist.clear();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject c = jsonArray.getJSONObject(i);
+                    bmp = null;
+                    bmp = getBitmapFromURL(c.getString(TAG_IMGURL));
+                    // Storing each json item in variable
+                    plist.add(new PostsItem(c.getInt(TAG_PID),c.getString(TAG_TITLE),c.getString(TAG_CONTENT),c.getString(TAG_VENUE),
+                            c.getString(TAG_DATE),c.getString(TAG_TIMESTAMP),bmp));
+                }
+                //} else {
+                //Toast.makeText(getApplicationContext(),"Network Error Occured",Toast.LENGTH_LONG).show();
+                //}
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            */
+            return "done";
+        }
     }
 
 }
