@@ -3,6 +3,7 @@ package com.decode.dtumessenger;
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,9 @@ public class ChatScreenActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     int latestmsg = -1;
     int chat_id = 2;
+    int my_id = 1;
+
+    SharedPreferences spref;
 
     // Creating JSON Parser object
     SendMessage jParser = new SendMessage();
@@ -55,8 +59,11 @@ public class ChatScreenActivity extends AppCompatActivity {
     private static final String USER_ID = "user_id";
     private static final String CONTENT = "content";
     private static final String TIME = "time";
+
     // posts JSONArray
     JSONArray msgs = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,11 @@ public class ChatScreenActivity extends AppCompatActivity {
         actionBarLogo = (CircleImageView) findViewById(R.id.action_bar_logo);
         sendBtn = (ImageButton)findViewById(R.id.btn_send);
         eMsg = (EditText)findViewById(R.id.chat_box);
+
+        chat_id = getIntent().getIntExtra("CHAT_ID",1);
+
+        spref = getSharedPreferences("LatestMessage",MODE_PRIVATE);
+        latestmsg = spref.getInt(Integer.toString(chat_id),-1);
 
         actionBarLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +107,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         MsgList = new ArrayList<Message>();
         MsgList.add(new Message(1,2,3,"aanya","1234"));
         MsgList.add(new Message(1,2,3,"anjndaijiajoxidk","1234"));
+        MsgList.add(new Message(1,2,3,"tester 3","1234"));
 
         msgRecyclerViewAdapter = new MsgRecyclerViewAdapter(MsgList);
         MsgRecyclerView = (RecyclerView) findViewById(R.id.rv_msg_list);
@@ -153,7 +166,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         public void onBindViewHolder(MsgRecyclerViewHolder holder, int position) {
 
             Message thisMsg = mMsg.get(position);
-            //holder.msg.setText(thisMsg.getContent());
+            holder.msg.setText(thisMsg.getContent());
             //holder.image.setImageResource(thisMsg.);
 
         }
@@ -182,7 +195,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         protected String doInBackground(Message... params) {
 
             // getting JSON string from URL
-            String respone = new SendMessage().makeHttpRequest(params[0]);
+            String respone = new SendMessage().makeHttpRequest(params[0],getApplicationContext());
             Log.d("send",params[0].getUrlParams());
             Log.d("send",respone);
 
@@ -233,26 +246,36 @@ public class ChatScreenActivity extends AppCompatActivity {
 
             // Check your log cat for JSON reponse
             //Log.d("All posts: ", json.toString());
-            /*
+
             try {
                 // looping through All posts
-                plist.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject c = jsonArray.getJSONObject(i);
-                    bmp = null;
-                    bmp = getBitmapFromURL(c.getString(TAG_IMGURL));
                     // Storing each json item in variable
-                    plist.add(new PostsItem(c.getInt(TAG_PID),c.getString(TAG_TITLE),c.getString(TAG_CONTENT),c.getString(TAG_VENUE),
-                            c.getString(TAG_DATE),c.getString(TAG_TIMESTAMP),bmp));
+                    MsgList.add(new Message(c.getInt(MSG_ID),c.getInt(CHAT_ID),c.getInt(USER_ID),c.getString(CONTENT),
+                            c.getString(TIME)));
                 }
+
+                latestmsg = MsgList.get(MsgList.size()-1).getMsg_id();
                 //} else {
                 //Toast.makeText(getApplicationContext(),"Network Error Occured",Toast.LENGTH_LONG).show();
                 //}
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            */
-            return "done";
+
+            if(jsonArray.length()>0)
+                return "done";
+            else
+                return "nothing";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.equals("done")){
+                msgRecyclerViewAdapter.notifyDataSetChanged();
+            }
         }
     }
 

@@ -1,19 +1,18 @@
 package com.decode.dtumessenger.NetworkUtilities;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.decode.dtumessenger.Models.Message;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by Aditya on 2/26/2017.
@@ -25,63 +24,39 @@ public class SendMessage {
 
     }
 
-    static InputStream is = null;
-    static JSONObject jObj = null;
-    static String json = "";
-    StringBuilder stringBuilder;
-    BufferedReader bufferedReader;
-    String line;
-    String jsonString;
-    JSONObject jsonObj;
-    HttpURLConnection con = null;
-    BufferedReader reader = null;
-    JSONArray jsonArray;
-    StringBuffer buffer;
 
-
+    String resp = "error";
     // function get json from url
     // by making HTTP POST or GET mehtod
-    public String makeHttpRequest(Message msg) {
+    public String makeHttpRequest(Message msg, Context context) {
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("chat_id", Integer.toString(msg.getChat_id()))
+                .add("user_id", Integer.toString(msg.getUser_id()))
+                .add("content", msg.getContent())
+                .add("time", "123")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://192.168.137.1/sendMessage.php")
+                .post(formBody)
+                .build();
+
         try {
-            URL url = new URL("http://192.168.137.1/sendMessage?"+msg.getUrlParams());
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            /*con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            con.setRequestProperty("charset", "utf-8");
-            con.setRequestProperty("Content-Length",Integer.toString(msg.getUrlParams().getBytes().length));*/
-            con.connect();
-            InputStream stream = con.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(stream));
-            buffer = new StringBuffer();
-            String line = "";
-            while ((line = reader.readLine()) != null){
-                buffer.append(line);
+            Response response = client.newCall(request).execute();
+            Log.d("send",request.toString());
+            if(response.isSuccessful()){
+                Log.d("send","success");
+                return "S";
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
+            // Do something with the response.
         } catch (IOException e) {
+            Log.d("send",e.toString());
             e.printStackTrace();
-        } finally {
-            if(con != null) {
-                con.disconnect();
-            }
-            try {
-                if(reader != null){
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
-        if(buffer != null) {
-            return buffer.toString();
-        }
-        else {
-            return "F";
-        }
+        return "F";
     }
+
 }

@@ -1,5 +1,6 @@
 package com.decode.dtumessenger;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,8 +34,8 @@ public class HomeScreen extends AppCompatActivity {
 
 
         ContactList = new ArrayList<Contact>();
-        ContactList.add(new Contact("aanya", "1234"));
-        ContactList.add(new Contact("anjndaijiajoxidk", "1234"));
+        ContactList.add(new Contact("John", "1234"));
+        ContactList.add(new Contact("Rob", "1234"));
 
         contactRecyclerViewAdapter = new ContactRecyclerViewAdapter(ContactList);
         ContactRecyclerView = (RecyclerView) findViewById(R.id.rv_chat_list);
@@ -88,6 +89,26 @@ public class HomeScreen extends AppCompatActivity {
 
             Contact thisContact = mContact.get(position);
             holder.contact.setText(thisContact.getName());
+            if(thisContact.getName().equals("John")) {
+                holder.contact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(HomeScreen.this, ChatScreenActivity.class);
+                        intent.putExtra("CHAT_ID", 1);
+                        startActivity(intent);
+                    }
+                });
+            }
+            else {
+                holder.contact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(HomeScreen.this, ChatScreenActivity.class);
+                        intent.putExtra("CHAT_ID", 2);
+                        startActivity(intent);
+                    }
+                });
+            }
             // holder.image.setImageResource();
 
         }
