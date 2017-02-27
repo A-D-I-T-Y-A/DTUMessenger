@@ -159,7 +159,7 @@ public class HomeScreen extends AppCompatActivity {
         adEtName = (EditText) editDialogView.findViewById(R.id.ad_et_name);
         adEtStatus = (EditText) editDialogView.findViewById(R.id.ad_et_status);
         adEtId = (EditText) editDialogView.findViewById(R.id.ad_et_id);
-        //adEtNum = (EditText) findViewById(R.id.ad_et_num);
+        adEtNum = (EditText) editDialogView.findViewById(R.id.ad_et_num);
 
 
         if(my_id != -1){
@@ -177,8 +177,8 @@ public class HomeScreen extends AppCompatActivity {
                 name = adEtName.getText().toString();
                 status = adEtStatus.getText().toString();
                 id = adEtId.getText().toString();
-                //contact = adEtNum.getText().toString();
-                contact = "666";
+                contact = adEtNum.getText().toString();
+                //contact = "666";
 
                 if(my_id == -1){
                     new registerUser().execute();

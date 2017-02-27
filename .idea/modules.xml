@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DTUmessenger.iml" filepath="$PROJECT_DIR$/DTUmessenger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DTUMessenger.iml" filepath="$PROJECT_DIR$/DTUMessenger.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
