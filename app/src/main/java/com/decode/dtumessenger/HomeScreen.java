@@ -164,9 +164,11 @@ public class HomeScreen extends AppCompatActivity {
 
         if(my_id != -1){
             adEtId.setEnabled(false);
+            adEtNum.setEnabled(false);
             adEtId.setText(Integer.toString(my_id));
             adEtName.setText(pref.getString("NAME","null"));
             adEtStatus.setText(pref.getString("STATUS","Hi There"));
+            adEtNum.setText(pref.getString("CONTACT", "666"));
             //adEtNum.setVisibility(View.GONE);
         }
 

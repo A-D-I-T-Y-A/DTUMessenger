@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.decode.dtumessenger.Models.Message;
 import com.decode.dtumessenger.NetworkUtilities.GetMessages;
+import com.decode.dtumessenger.NetworkUtilities.GetUser;
 import com.decode.dtumessenger.NetworkUtilities.SendMessage;
 
 import org.json.JSONArray;
@@ -49,6 +50,7 @@ public class ChatScreenActivity extends AppCompatActivity {
     int chat_id = 2;
     int my_id = 1;
     int user_id;
+    String name;
 
     SharedPreferences spref;
 
@@ -67,6 +69,7 @@ public class ChatScreenActivity extends AppCompatActivity {
     JSONArray msgs = null;
 
     Handler handler;
+    android.support.v7.app.ActionBar actionBar;
 
 
 
@@ -75,12 +78,12 @@ public class ChatScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_screen);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
 
         actionBar.setCustomView(R.layout.custom_action_bar);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setTitle("Name");
+        //actionBar.setTitle("Name");
         actionBarLogo = (CircleImageView) findViewById(R.id.action_bar_logo);
         sendBtn = (ImageButton)findViewById(R.id.btn_send);
         eMsg = (EditText)findViewById(R.id.chat_box);
@@ -128,6 +131,8 @@ public class ChatScreenActivity extends AppCompatActivity {
         msgRecyclerViewAdapter.notifyDataSetChanged();
 
         new ReceiveMessages().execute();
+
+        new GUSER().execute();
 
         //update check regular
         handler = new Handler();
@@ -271,7 +276,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             // getting JSON string from URL
-            final JSONArray jsonArray = new GetMessages().makeHttpRequest(2,latestmsg);
+            final JSONArray jsonArray = new GetMessages().makeHttpRequest(chat_id,latestmsg);
             Log.d("get",Integer.toString(latestmsg));
 
 
@@ -316,5 +321,43 @@ public class ChatScreenActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
+    }
+
+    class GUSER extends AsyncTask<Void,String,String>{
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            // getting JSON string from URL
+            final JSONObject jsonObject = new GetUser().makeHttpRequest(user_id);
+            //Log.d("get",Integer.toString(latestmsg));
+
+            if(jsonObject != null) {
+                try {
+                    name = jsonObject.getString("name");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return "done";
+            }
+            else
+                return "nothing";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.equals("done")){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //tcontact.setText(contact);
+                        //tstatus.setText(status);
+                        actionBar.setTitle(name);
+                        Log.d("send",name);
+                    }
+                });
+            }
+        }
     }
 }

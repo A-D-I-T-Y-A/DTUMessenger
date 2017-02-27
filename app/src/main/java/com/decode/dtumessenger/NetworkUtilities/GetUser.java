@@ -57,7 +57,7 @@ public class GetUser {
                 line = response.body().string();
                 //Log.d("send",response.body().string());
                 jsonObj = new JSONObject(line);
-                Log.d("send",json.toString());
+                Log.d("send",jsonObj.toString());
                 return jsonObj;
             }
 

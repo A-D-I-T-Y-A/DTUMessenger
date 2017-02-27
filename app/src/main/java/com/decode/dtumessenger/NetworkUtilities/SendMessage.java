@@ -35,7 +35,7 @@ public class SendMessage {
                 .add("chat_id", Integer.toString(msg.getChat_id()))
                 .add("user_id", Integer.toString(msg.getUser_id()))
                 .add("content", msg.getContent())
-                .add("time", "123")
+                .add("time", msg.getTime())
                 .build();
         Request request = new Request.Builder()
                 .url("http://192.168.137.1/sendMessage.php")

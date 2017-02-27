@@ -34,6 +34,8 @@ public class ProfileActivity extends AppCompatActivity {
     String status;
     String contact;
 
+    JSONObject jsonObject = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
         tcontact = (TextView)findViewById(R.id.tv_contact_item);
         tstatus = (TextView)findViewById(R.id.tv_status);
 
-
+        new GUSER().execute();
 
         new LoadImage().execute(Integer.toString(user_id));
     }
@@ -96,12 +98,12 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    class ReceiveMessages extends AsyncTask<Void,String,String>{
+    class GUSER extends AsyncTask<Void,String,String>{
 
         @Override
         protected String doInBackground(Void... voids) {
             // getting JSON string from URL
-            final JSONObject jsonObject = new GetUser().makeHttpRequest(user_id);
+            jsonObject = new GetUser().makeHttpRequest(user_id);
             //Log.d("get",Integer.toString(latestmsg));
 
             if(jsonObject != null) {
